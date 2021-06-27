@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @SpringBootApplication
 
-public class Application {
+public class RoutingV1Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(RoutingV1Application.class, args);
 	}
 
 	@GetMapping("/")
@@ -25,7 +25,7 @@ public class Application {
 
 	@GetMapping("/service2")
 	public String service2(){
-		return "service12 - version v1\n";
+		return "service2 - version v1\n";
 	}
 
 	@RequestMapping(
