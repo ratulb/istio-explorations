@@ -1,0 +1,24 @@
+#Would delegate requests to routing:v2 pods. If routing-1 is also deployed then - requests would be delegated to routing:v1 pods too.
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs-routing-demo
+  namespace: istio-explorations
+spec:
+  gateways:
+    - gateway
+  hosts:
+    - "*"
+  http:
+    - match:
+        - uri:
+            exact: /service1
+        - uri:
+            exact: /service2
+        - uri:
+            exact: /
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: routing-demo
