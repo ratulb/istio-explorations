@@ -40,6 +40,7 @@
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>3.1.1</version>
 				<configuration>
+					<from><image>adoptopenjdk@sha256:8ec8ac091f127f9a41b96bf06e2f0404bd86a516326e208234c9cd18a5955eb9</image></from>
 					<to>
 						<image>docker.io/ratulb/routing:v1</image>
 						<!--auth>
@@ -47,6 +48,9 @@
       						<password>test</password>
     					</auth-->
 					</to>
+					<container>
+						<mainClass>istio.routing.RoutingV1Application</mainClass>
+					</container>
 				</configuration>
 			</plugin>
 		</plugins>

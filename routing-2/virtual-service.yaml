@@ -1,0 +1,47 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs-routing-demo
+  namespace: istio-explorations
+spec:
+  gateways:
+    - gateway
+  hosts:
+    - '*'
+  http:
+  - match:
+    - uri:
+        exact: /service1
+    route:
+    - destination:
+        host: routing-demo
+        subset: v1
+        #The above match will always target 'routing:v1' pods' '/service1' endpoints
+  - match:
+    - uri:
+        exact: /service2
+    route:
+    - destination:
+        host: routing-demo
+        subset: v2
+        #The above will target 'routing:v2' pods' '/service2' endpoints
+  - match:
+    - headers:
+        release:
+          exact: 'rc1' #curl -Hrelease:rc1 localhost:8080
+      uri:
+        prefix: '/'
+    route:
+    - destination:
+        host: routing-demo
+        subset: v2
+        #Route based on exact header value '-Hrelease:rc1' to 'routing:v2' backend
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: routing-demo
+        subset: v2
+        #Anything after '/' and only '/' match
+ 

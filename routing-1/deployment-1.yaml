@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: istio-explorations
+  name: routing-deployment-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: route-pod
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: route-pod
+        version: v1
+    spec:
+      containers:
+      - name: routing
+        image: ratulb/routing:v1
+---
+apiVersion: v1
+kind: Service #cluster ip
+metadata:
+  labels:
+    app: routing-demo
+    version: v1
+  name: routing-demo
+  namespace: istio-explorations
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+  selector:
+    app: route-pod

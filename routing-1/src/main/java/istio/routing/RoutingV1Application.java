@@ -33,6 +33,6 @@ public class RoutingV1Application {
 			method = { RequestMethod.GET, RequestMethod.POST /*** ...***/})
 	@ResponseBody
 	public String catchAll() {
-		return "Catch all requests";
+		return "\nCatch all requests - version v1\n";
 	}
 }
