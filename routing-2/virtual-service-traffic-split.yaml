@@ -1,14 +1,13 @@
-#To be run in conjunction with destnation rules
-apiVersion: networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: vs-routing-demo
   namespace: istio-explorations
 spec:
   gateways:
-    - gateway
+  - gateway
   hosts:
-    - '*'
+  - '*'
   http:
   - match:
     - uri:
@@ -17,32 +16,44 @@ spec:
     - destination:
         host: routing-demo
         subset: v1
-        #The above match will always target 'routing:v1' pods' '/service1' endpoints
+      weight: 20
+    - destination:
+        host: routing-demo
+        subset: v2
+      weight: 80
   - match:
     - uri:
         exact: /service2
     route:
     - destination:
         host: routing-demo
-        subset: v2
-        #The above will target 'routing:v2' pods' '/service2' endpoints
-  - match:
-    - headers:
-        release:
-          exact: 'rc1' #curl -Hrelease:rc1 localhost:8080
-      uri:
-        prefix: '/'
-    route:
+        subset: v1
+      weight: 20
     - destination:
         host: routing-demo
         subset: v2
-        #Route based on exact header value '-Hrelease:rc1' to 'routing:v2' backend
+      weight: 80
+  - match:
+    - uri:
+        exact: /
+    route:
+    - destination:
+        host: routing-demo
+        subset: v1
+      weight: 20
+    - destination:
+        host: routing-demo
+        subset: v2
+      weight: 80
   - match:
     - uri:
         prefix: /
     route:
     - destination:
         host: routing-demo
+        subset: v1
+      weight: 20
+    - destination:
+        host: routing-demo
         subset: v2
-        #Anything after '/' and only '/' match
- 
+      weight: 80
